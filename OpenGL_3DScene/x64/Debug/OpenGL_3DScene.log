@@ -1,0 +1,10 @@
+﻿  Application.cpp
+C:\dev\Cpp\University\OpenGL\Coursework\OpenGL_3DScene\OpenGL_3DScene\src\Application.cpp(58,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\dev\Cpp\University\OpenGL\Coursework\OpenGL_3DScene\OpenGL_3DScene\src\Application.cpp(260,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\dev\Cpp\University\OpenGL\Coursework\OpenGL_3DScene\OpenGL_3DScene\src\Application.cpp(370,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\dev\Cpp\University\OpenGL\Coursework\OpenGL_3DScene\OpenGL_3DScene\src\Application.cpp(371,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\dev\Cpp\University\OpenGL\Coursework\OpenGL_3DScene\OpenGL_3DScene\src\Application.cpp(375,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\dev\Cpp\University\OpenGL\Coursework\OpenGL_3DScene\OpenGL_3DScene\src\Application.cpp(376,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\dev\Cpp\University\OpenGL\Coursework\OpenGL_3DScene\OpenGL_3DScene\src\Application.cpp(378,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\dev\Cpp\University\OpenGL\Coursework\OpenGL_3DScene\OpenGL_3DScene\src\Application.cpp(379,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  OpenGL_3DScene.vcxproj -> C:\dev\Cpp\University\OpenGL\Coursework\OpenGL_3DScene\x64\Debug\OpenGL_3DScene.exe
