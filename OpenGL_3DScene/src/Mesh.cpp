@@ -184,6 +184,7 @@ void Mesh::draw(Shader& shader,
 		shader.setUniform1f(pointUniformLoc + ".linear", 0.09f);
 		shader.setUniform1f(pointUniformLoc + ".quadratic", 0.057f);
 	}
+
 	// Bind vertex array and index buffer objects
 	GLCall(glBindVertexArray(vao));
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));

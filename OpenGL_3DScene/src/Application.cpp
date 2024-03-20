@@ -333,6 +333,7 @@ int main()
 				ImGui::SliderFloat("Camera fx", &camera.getFront().x, -100.0f, 100.0f);
 				ImGui::SliderFloat("Camera fy", &camera.getFront().y, -100.0f, 100.0f);
 				ImGui::SliderFloat("Camera fz", &camera.getFront().z, -100.0f, 100.0f);
+
 				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			}
 			ImGui::Render();

@@ -55,7 +55,7 @@ public:
     // Returns the view matrix calculated using Eular Angles and the LookAt Matrix
     glm::mat4 getViewMatrix( )
     {
-        return glm::lookAt( this->position, this->position + this->front, this->up );
+        return glm::lookAt( position, position + front, up );
     }
     
     // Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
@@ -109,12 +109,6 @@ public:
         
         // Update Front, Right and Up Vectors using the updated Eular angles
         this->updateCameraVectors( );
-    }
-    
-    // Processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
-    void processMouseScroll( GLfloat yOffset )
-    {
-        
     }
     
     GLfloat getZoom( )
