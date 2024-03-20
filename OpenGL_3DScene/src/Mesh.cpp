@@ -111,7 +111,7 @@ void Mesh::draw(Shader& shader,
 	shader.setUniform1f("u_Material.shininess", 16.0f);
 
 	// Point Light
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < 11; i++)
 	{
 		std::string pointUniformLoc = std::format("u_PointLight[{}]", i);
 
@@ -170,7 +170,7 @@ void Mesh::draw(Shader& shader,
 	shader.setUniform1f("u_Material.shininess", 16.0f);
 
 	// Point Light
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < 11; i++)
 	{
 		std::string pointUniformLoc = std::format("u_PointLight[{}]", i);
 

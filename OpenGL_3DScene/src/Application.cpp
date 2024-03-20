@@ -30,14 +30,6 @@
 #include "Model.h"
 #include "CubemapTex.h"
 
-enum MoveDirection
-{
-	FORW,
-	BACKW,
-	LT,
-	RT
-};
-
 Camera camera(glm::vec3(-36.417f, 35.579f, 46.015f));
 
 const unsigned int WIDTH = 800, HEIGHT = 600;
@@ -49,6 +41,7 @@ bool keys[1024];
 bool firstMouse = true;
 
 bool fixCamera = false;
+bool showLightSources = false;
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
@@ -57,12 +50,13 @@ bool noTextureFlag;
 
 int movementSpeed = 15.0f;
 
-void processKeyboard(MoveDirection, float&);
+void processKeyboard(Camera_Movement, float&);
+void processKeyboard(Camera_Movement, float**, int);
 void glfw_window_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void mouseCallback(GLFWwindow* window, double xPos, double yPos);
 void doCameraMovement();
-void doObjMovement(float&);
+void doObjMovement(float**,int,float,float);
 
 int main()
 {
@@ -104,50 +98,77 @@ int main()
 			// BACK
 			-0.5f, -0.5f, -0.5f, // 0
 			 0.5f, -0.5f, -0.5f, // 1
-			 0.5f,  0.5f, -0.5f, // 2 
-			 0.5f,  0.5f, -0.5f, // 3 
-			-0.5f,  0.5f, -0.5f, // 4 
-			-0.5f, -0.5f, -0.5f, // 5 
+			 0.5f,  0.5f, -0.5f, // 2
+			 0.5f,  0.5f, -0.5f, // 2
+			-0.5f,  0.5f, -0.5f, // 3
+			-0.5f, -0.5f, -0.5f, // 0
 
 			// FRONT
-			-0.5f, -0.5f,  0.5f, // 6
-			 0.5f, -0.5f,  0.5f, // 7
-			 0.5f,  0.5f,  0.5f, // 8
-			 0.5f,  0.5f,  0.5f, // 9
-			-0.5f,  0.5f,  0.5f, // 10
-			-0.5f, -0.5f,  0.5f, // 11
+			-0.5f, -0.5f,  0.5f, // 4
+			 0.5f, -0.5f,  0.5f, // 5
+			 0.5f,  0.5f,  0.5f, // 6
+			 0.5f,  0.5f,  0.5f, // 6
+			-0.5f,  0.5f,  0.5f, // 7
+			-0.5f, -0.5f,  0.5f, // 4
 
 			// LEFT
-			-0.5f,  0.5f,  0.5f, // 12
-			-0.5f,  0.5f, -0.5f, // 13 
-			-0.5f, -0.5f, -0.5f, // 14 
-			-0.5f, -0.5f, -0.5f, // 15 
-			-0.5f, -0.5f,  0.5f, // 16 
-			-0.5f,  0.5f,  0.5f, // 17 
+			-0.5f,  0.5f,  0.5f, // 7
+			-0.5f,  0.5f, -0.5f, // 3 
+			-0.5f, -0.5f, -0.5f, // 8
+			-0.5f, -0.5f, -0.5f, // 8
+			-0.5f, -0.5f,  0.5f, // 4
+			-0.5f,  0.5f,  0.5f, // 7
 
 			// RIGHT
-			0.5f,  0.5f,  0.5f, // 18
-			0.5f,  0.5f, -0.5f, // 19
-			0.5f, -0.5f, -0.5f, // 20
-			0.5f, -0.5f, -0.5f, // 21
-			0.5f, -0.5f,  0.5f, // 22
-			0.5f,  0.5f,  0.5f, // 23
+			0.5f,  0.5f,  0.5f, // 6
+			0.5f,  0.5f, -0.5f, // 2
+			0.5f, -0.5f, -0.5f, // 1
+			0.5f, -0.5f, -0.5f, // 1
+			0.5f, -0.5f,  0.5f, // 5
+			0.5f,  0.5f,  0.5f, // 6
 
 			// BOTTOM
-		   -0.5f, -0.5f, -0.5f, // 24
-			0.5f, -0.5f, -0.5f, // 25 
-			0.5f, -0.5f,  0.5f, // 26 
-			0.5f, -0.5f,  0.5f, // 27 
-		   -0.5f, -0.5f,  0.5f, // 28 
-		   -0.5f, -0.5f, -0.5f, // 29
+		   -0.5f, -0.5f, -0.5f, // 0
+			0.5f, -0.5f, -0.5f, // 1
+			0.5f, -0.5f,  0.5f, // 5
+			0.5f, -0.5f,  0.5f, // 5
+		   -0.5f, -0.5f,  0.5f, // 4
+		   -0.5f, -0.5f, -0.5f, // 0
 
 		   // TOP
-		   -0.5f,  0.5f, -0.5f, // 30
-			0.5f,  0.5f, -0.5f, // 31
-			0.5f,  0.5f,  0.5f, // 32 
-			0.5f,  0.5f,  0.5f, // 33 
-		   -0.5f,  0.5f,  0.5f, // 34 
-		   -0.5f,  0.5f, -0.5f, // 35
+		   -0.5f,  0.5f, -0.5f, // 3
+			0.5f,  0.5f, -0.5f, // 2
+			0.5f,  0.5f,  0.5f, // 6
+			0.5f,  0.5f,  0.5f, // 6
+		   -0.5f,  0.5f,  0.5f, // 7
+		   -0.5f,  0.5f, -0.5f, // 3
+		};
+
+		unsigned int lamp_indices[]
+		{
+			// BACK
+			0,1,2,
+			2,3,0,
+
+			// FRONT
+			4,5,6,
+			6,7,4,
+
+			// LEFT
+			7,3,8,
+			8,4,7,
+
+			// RIGHT
+			6,2,1,
+			1,5,6,
+
+			// BOTTOM
+			0,1,5,
+			5,4,0,
+
+			// TOP
+			3,2,6,
+			6,7,3
 		};
 
 		VertexBuffer vbLamp(&lamp_positions, 6 * 6 * 3 * sizeof(float));
@@ -157,6 +178,8 @@ int main()
 
 		VertexArray vaLamp;
 		vaLamp.addBuffer(vbLamp, layoutLamp);
+
+		IndexBuffer ibLamp(lamp_indices, 6 * 2 * 3);
 
 		// Creating light sources
 		Shader shaderLamp("res/shaders/Lamp.shader");
@@ -172,51 +195,53 @@ int main()
 			glm::vec3(-29.204f,15.044f,-3.009f),
 			glm::vec3(-39.233f,10.914f,36.136f),
 			glm::vec3(3.245f,10.324f,37.316f),
+			glm::vec3(-4.511f,2.256f,3.759f),
+			glm::vec3(-4.511f,2.256f,9.774f),
 		};
 
 		float skyboxVertices[] = {
 			// Positions
-			-1.0f,  1.0f, -1.0f,
-			-1.0f, -1.0f, -1.0f,
-			1.0f, -1.0f, -1.0f,
-			1.0f, -1.0f, -1.0f,
-			1.0f,  1.0f, -1.0f,
-			-1.0f,  1.0f, -1.0f,
+			-1.0f,  1.0f, -1.0f, // 0
+			-1.0f, -1.0f, -1.0f, // 1
+			 1.0f, -1.0f, -1.0f, // 2
+			 1.0f, -1.0f, -1.0f, // 2
+			 1.0f,  1.0f, -1.0f, // 3
+			-1.0f,  1.0f, -1.0f, // 0
 
-			-1.0f, -1.0f,  1.0f,
-			-1.0f, -1.0f, -1.0f,
-			-1.0f,  1.0f, -1.0f,
-			-1.0f,  1.0f, -1.0f,
-			-1.0f,  1.0f,  1.0f,
-			-1.0f, -1.0f,  1.0f,
+			-1.0f, -1.0f,  1.0f, // 4
+			-1.0f, -1.0f, -1.0f, // 1
+			-1.0f,  1.0f, -1.0f, // 0
+			-1.0f,  1.0f, -1.0f, // 0
+			-1.0f,  1.0f,  1.0f, // 5
+			-1.0f, -1.0f,  1.0f, // 4
 
-			1.0f, -1.0f, -1.0f,
-			1.0f, -1.0f,  1.0f,
-			1.0f,  1.0f,  1.0f,
-			1.0f,  1.0f,  1.0f,
-			1.0f,  1.0f, -1.0f,
-			1.0f, -1.0f, -1.0f,
+			 1.0f, -1.0f, -1.0f, // 2
+			 1.0f, -1.0f,  1.0f, // 6
+			 1.0f,  1.0f,  1.0f, // 7
+			 1.0f,  1.0f,  1.0f, // 7
+			 1.0f,  1.0f, -1.0f, // 3
+			 1.0f, -1.0f, -1.0f, // 2
 
-			-1.0f, -1.0f,  1.0f,
-			-1.0f,  1.0f,  1.0f,
-			1.0f,  1.0f,  1.0f,
-			1.0f,  1.0f,  1.0f,
-			1.0f, -1.0f,  1.0f,
-			-1.0f, -1.0f,  1.0f,
+			-1.0f, -1.0f,  1.0f, // 4
+			-1.0f,  1.0f,  1.0f, // 5
+			 1.0f,  1.0f,  1.0f, // 7
+			 1.0f,  1.0f,  1.0f, // 7
+			 1.0f, -1.0f,  1.0f, // 6
+			-1.0f, -1.0f,  1.0f, // 4
 
-			-1.0f,  1.0f, -1.0f,
-			1.0f,  1.0f, -1.0f,
-			1.0f,  1.0f,  1.0f,
-			1.0f,  1.0f,  1.0f,
-			-1.0f,  1.0f,  1.0f,
-			-1.0f,  1.0f, -1.0f,
+			-1.0f,  1.0f, -1.0f, // 0
+			 1.0f,  1.0f, -1.0f, // 3
+			 1.0f,  1.0f,  1.0f, // 7
+			 1.0f,  1.0f,  1.0f, // 7
+			-1.0f,  1.0f,  1.0f, // 5
+			-1.0f,  1.0f, -1.0f, // 0
 
-			-1.0f, -1.0f, -1.0f,
-			-1.0f, -1.0f,  1.0f,
-			1.0f, -1.0f, -1.0f,
-			1.0f, -1.0f, -1.0f,
-			-1.0f, -1.0f,  1.0f,
-			1.0f, -1.0f,  1.0f
+			-1.0f, -1.0f, -1.0f, // 1
+			-1.0f, -1.0f,  1.0f, // 4
+			 1.0f, -1.0f, -1.0f, // 2
+			 1.0f, -1.0f, -1.0f, // 2
+			-1.0f, -1.0f,  1.0f, // 4
+			 1.0f, -1.0f,  1.0f  // 6
 		};
 
 		VertexBuffer vbSkyBox(&skyboxVertices, 6 * 6 * 3 * sizeof(float));
@@ -246,6 +271,13 @@ int main()
 		glm::vec3 streetModelTranslation(0.0f, -1.75f, 2.0f);
 		glm::vec3 carModelTranslation(2.065f, -0.885f, 6.785f);
 		glm::vec3 carModelScale(5.487f, 5.487f, 5.487f);
+
+		float* changingPositions[]
+		{
+			&carModelTranslation.x,
+			&pointLightPositions[9].x,
+			&pointLightPositions[10].x
+		};
 
 		/* ImGui */
 		ImGui::CreateContext();
@@ -298,24 +330,23 @@ int main()
 				);
 			}
 
+			if(showLightSources)
 			{
 				shaderLamp.setUniformMat4f("u_Projection", projection);
 				shaderLamp.setUniformMat4f("u_View", view);
-				for (unsigned int i = 0; i < 9; i++)
+				for (unsigned int i = 0; i < 11; i++)
 				{
 					glm::mat4 model = glm::mat4(1.0f);
 					model = glm::translate(model, pointLightPositions[i]);
 					model = glm::scale(model, glm::vec3(0.2f));
 					shaderLamp.setUniformMat4f("u_Model", model);
 
-					renderer.draw(GL_TRIANGLES, 0, 36, vaLamp, shaderLamp);
+					renderer.draw(GL_TRIANGLES, vaLamp, ibLamp, shaderLamp);
 				}
 			}
 
 			{
 				glDepthFunc(GL_LEQUAL);
-
-				shaderSkybox.bind();
 				glm::mat4 view = glm::mat4(1.0f);
 				view = glm::mat4(glm::mat3(glm::lookAt(camera.getPosition(), camera.getPosition() + camera.getFront(), camera.getCameraUp())));
 
@@ -323,9 +354,9 @@ int main()
 				shaderSkybox.setUniformMat4f("u_View", view);
 
 				renderer.draw(GL_TRIANGLES, 0, 36, vaSBox, shaderSkybox, cubemapTexture);
-			}
 
-			glDepthFunc(GL_LESS);
+				glDepthFunc(GL_LESS);
+			}
 
 			{
 				ImGui::Text("Camera translation");
@@ -347,8 +378,7 @@ int main()
 
 			glfwSetKeyCallback(window, key_callback);
 
-			doObjMovement(carModelTranslation.x);
-
+			doObjMovement(changingPositions,3, -35.898, 30.418);
 			if (!fixCamera)
 			{
 				doCameraMovement();
@@ -358,9 +388,9 @@ int main()
 		}
 	}
 
-		ImGui_ImplGlfwGL3_Shutdown();
-		ImGui::DestroyContext();
-		GLApp::terminate();
+	ImGui_ImplGlfwGL3_Shutdown();
+	ImGui::DestroyContext();
+	GLApp::terminate();
 	return 0;
 }
 
@@ -458,30 +488,51 @@ void doCameraMovement()
 	}
 }
 
-void doObjMovement(float& position)
+void doObjMovement(float** positions, int size, float boundsL, float boundsR)
 {
-	if (keys [GLFW_KEY_W] && position>-35.898)
+	if (keys[GLFW_KEY_W] && *positions[0] > boundsL)
 	{
-		processKeyboard(FORW,position);
+		processKeyboard(FORWARD, positions,3);
 	}
 
-	if (keys[GLFW_KEY_S] && position<30.418)
+	if (keys[GLFW_KEY_S] && *positions[0] < boundsR)
 	{
-		processKeyboard(BACKW,position);
+		processKeyboard(BACKWARD, positions,3);
 	}
 }
 
-void processKeyboard(MoveDirection direction, float& position)
+void processKeyboard(Camera_Movement direction, float& position)
 {
-	GLfloat velocity = movementSpeed * deltaTime;
+	float velocity = movementSpeed * deltaTime;
 
-	if (direction == FORW)
+	if (direction == FORWARD)
 	{
 		position -= velocity;
 	}
 
-	if (direction == BACKW)
+	if (direction == BACKWARD)
 	{
 		position += velocity;
+	}
+}
+
+void processKeyboard(Camera_Movement direction, float** positions, int positions_size)
+{
+	float velocity = movementSpeed * deltaTime;
+
+	if (direction == FORWARD)
+	{
+		for (int i = 0; i < positions_size; i++)
+		{
+			*positions[i] -= velocity;
+		}
+	}
+
+	if (direction == BACKWARD)
+	{
+		for (int i = 0; i < positions_size; i++)
+		{
+			*positions[i] += velocity;
+		}
 	}
 }

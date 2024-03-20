@@ -95,7 +95,7 @@ in vec3 FragSpecular;
 
 in float FragOpacity;
 
-const int NUMBER_OF_POINT_LIGHTS = 9;
+const int NUMBER_OF_POINT_LIGHTS = 11;
 
 uniform vec3 u_ViewPos;
 uniform Material u_Material;
