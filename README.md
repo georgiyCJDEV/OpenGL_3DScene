@@ -8,5 +8,5 @@ GLFW package used for creating window.<br/>
 GLM package used for opengl mathematics.<br/> 
 Assimp library used for model loading https://github.com/assimp/assimp.<br/> 
 SOIL2 library used for creating textures from image files https://github.com/SpartanJ/SOIL2.<br/> 
-<br/> 
+<hr/> 
 Inspired by https://learnopengl.com/ tutorials.
