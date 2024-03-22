@@ -9,6 +9,7 @@
 
 // My includes
 #include "Shader.h"
+#include "Camera.h"
 
 struct Vertex
 {
@@ -52,17 +53,13 @@ public:
 	// Render
 	void draw(Shader& shader,
 		glm::mat4&, glm::mat4&, glm::mat4&,
-		const float& vPosX, const float& vPosY, const float& vPosZ,		// Camera positions
-		const glm::vec3* pointLightPoisitions,							// Point light positions
-		const float& frPosX, const float& frPOsY, const float& frPosZ	// Camera front positions);
-	);
+		Camera& camera,
+		const glm::vec3* pointLightPoisitions);
 	void draw(Shader& shader,
 		bool& noTextureFlag,
 		glm::mat4&, glm::mat4&, glm::mat4&,
-		const float& vPosX, const float& vPosY, const float& vPosZ,		// Camera positions
-		const glm::vec3* pointLightPoisitions,							// Point light positions
-		const float& frPosX, const float& frPOsY, const float& frPosZ	// Camera front positions);
-	);
+		Camera& camera,
+		const glm::vec3* pointLightPoisitions);
 
 	inline std::vector<Texture> getTextures() const { return textures; }
 };

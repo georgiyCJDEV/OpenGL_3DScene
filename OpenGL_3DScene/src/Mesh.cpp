@@ -71,10 +71,8 @@ void Mesh::setupMesh()
 
 void Mesh::draw(Shader& shader,
 	glm::mat4& projection, glm::mat4& view, glm::mat4& model,
-	const float& vPosX, const float& vPosY, const float& vPosZ,		// Camera positions
-	const glm::vec3* pointLightPoisitions,							// Point light positions
-	const float& frPosX, const float& frPOsY, const float& frPosZ	// Camera front positions);
-)
+	Camera& camera,
+	const glm::vec3* pointLightPoisitions)
 {
 	shader.setUniformMat4f("u_Projection", projection);
 	shader.setUniformMat4f("u_View", view);
@@ -105,7 +103,7 @@ void Mesh::draw(Shader& shader,
 	}
 	
 	// View position
-	shader.setUniform3f("u_ViewPos", vPosX,vPosY,vPosZ); // Camera positions
+	shader.setUniform3f("u_ViewPos", camera.getPosition().x,camera.getPosition().y,camera.getPosition().z); // Camera positions
 
 	// Material setup
 	shader.setUniform1f("u_Material.shininess", 16.0f);
@@ -150,10 +148,8 @@ void Mesh::draw(Shader& shader,
 void Mesh::draw(Shader& shader,
 	bool& noTextureFlag,
 	glm::mat4& projection, glm::mat4& view, glm::mat4& model,
-	const float& vPosX, const float& vPosY, const float& vPosZ,		// Camera positions
-	const glm::vec3* pointLightPoisitions,							// Point light positions
-	const float& frPosX, const float& frPOsY, const float& frPosZ	// Camera front positions);
-)
+	Camera&camera,
+	const glm::vec3* pointLightPoisitions)
 {
 	if (!noTextureFlag)
 	{
@@ -164,7 +160,7 @@ void Mesh::draw(Shader& shader,
 	shader.setUniformMat4f("u_Model", model);
 
 	// View position
-	shader.setUniform3f("u_ViewPos", vPosX, vPosY, vPosZ); // Camera positions
+	shader.setUniform3f("u_ViewPos", camera.getPosition().x,camera.getPosition().y,camera.getPosition().z); // Camera positions
 
 	// Material setup
 	shader.setUniform1f("u_Material.shininess", 16.0f);
@@ -198,5 +194,4 @@ void Mesh::draw(Shader& shader,
 	// Unbind vertex array and index buffer objects
 	GLCall(glBindVertexArray(0));
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-
 }

@@ -11,6 +11,7 @@
 // My includes
 #include "Mesh.h"
 #include "Shader.h"
+#include "Camera.h"
 
 class Model
 {
@@ -36,14 +37,10 @@ public:
 	void draw(Shader* shader,
 		bool& noTextureFlag,
 		glm::mat4&, glm::mat4&, glm::mat4&,
-		const float& vPosX, const float& vPosY, const float& vPosZ,		// Camera positions
-		const glm::vec3* pointLightPoisitions,							// Point light positions
-		const float& frPosX, const float& frPOsY, const float& frPosZ	// Camera front positions);
-	);
+		Camera& camera,
+		const glm::vec3* pointLightPoisitions);
 	void draw(Shader& shader,
 		glm::mat4&,glm::mat4&,glm::mat4&,
-		const float& vPosX, const float& vPosY, const float& vPosZ,		// Camera positions
-		const glm::vec3* pointLightPoisitions,							// Point light positions
-		const float& frPosX, const float& frPOsY, const float& frPosZ	// Camera front positions);
-	);
+		Camera& camera,
+		const glm::vec3* pointLightPoisitions);
 };

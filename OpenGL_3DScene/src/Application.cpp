@@ -308,10 +308,8 @@ int main()
 				// Setup fs uniforms and draw model
 				streetModel.draw(shaderModel,
 					projection, view, model,
-					camera.getPosition().x, camera.getPosition().y, camera.getPosition().z,
-					pointLightPositions,
-					camera.getFront().x, camera.getFront().y, camera.getFront().z
-				);
+					camera,
+					pointLightPositions);
 			}
 
 			{
@@ -324,9 +322,8 @@ int main()
 				carModel.draw(shadersArr,
 					noTextureFlag,
 					projection, view, model,
-					camera.getPosition().x, camera.getPosition().y, camera.getPosition().z,
-					pointLightPositions,
-					camera.getFront().x, camera.getFront().y, camera.getFront().z
+					camera,
+					pointLightPositions
 				);
 			}
 

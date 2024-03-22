@@ -214,10 +214,8 @@ int Model::loadTextureFromFile(const char* path, std::string directory)
 void Model::draw(Shader* shadersArr,
 	bool& noTextureFlag,
 	glm::mat4& projection, glm::mat4& view, glm::mat4& model,
-	const float& vPosX, const float& vPosY, const float& vPosZ,		// Camera positions
-	const glm::vec3* pointLightPoisitions,							// Point light positions
-	const float& frPosX, const float& frPOsY, const float& frPosZ	// Camera front positions);
-)
+	Camera& camera,
+	const glm::vec3* pointLightPoisitions)
 {
 	for (unsigned int i = 0; i < meshes.size(); i++)
 	{
@@ -226,34 +224,30 @@ void Model::draw(Shader* shadersArr,
 			meshes[i].draw(shadersArr[1],
 				noTextureFlag,
 				projection, view, model,
-				vPosX, vPosY, vPosZ,
-				pointLightPoisitions,
-				frPosX, frPOsY, frPosZ);
+				camera,
+				pointLightPoisitions);
 		}
 		else 
 		{
 			meshes[i].draw(shadersArr[0],
 				projection, view, model,
-				vPosX, vPosY, vPosZ,
-				pointLightPoisitions,
-				frPosX, frPOsY, frPosZ);
+				camera,
+				pointLightPoisitions);
 		}
 	}
 }
 
+/*If model only has textures*/
 void Model::draw(Shader& shader,
 	glm::mat4& projection, glm::mat4& view, glm::mat4& model,
-	const float& vPosX, const float& vPosY, const float& vPosZ,		// Camera positions
-	const glm::vec3* pointLightPoisitions,							// Point light positions
-	const float& frPosX, const float& frPOsY, const float& frPosZ	// Camera front positions);
-)
+	Camera& camera,		
+	const glm::vec3* pointLightPoisitions)					
 {
 	for (unsigned int i = 0; i < meshes.size(); i++)
 	{
 			meshes[i].draw(shader,
 				projection, view, model,
-				vPosX, vPosY, vPosZ,
-				pointLightPoisitions,
-				frPosX, frPOsY, frPosZ);
+				camera,
+				pointLightPoisitions);
 	}
 }
